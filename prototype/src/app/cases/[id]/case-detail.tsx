@@ -17,19 +17,16 @@ import {
   Check,
   X,
   HelpCircle,
-  ShieldCheck,
-  ArrowRight,
   RefreshCw,
   Video,
   Eye,
   MapPin,
   FileText,
-  Gavel,
 } from "lucide-react";
 import { CASES, DETECTIVES, SERIES, fmtDate, fmtTime, linkedCases, matchesForCase, money, nearestCandidate, pairSimilarity, prioritize, seriesExplanation, similarityScore, type BurglaryCase } from "@/lib/data";
 import { useStore } from "@/lib/store";
 import { CHART, Panel, PriorityBadge, ScoreBar, ScoreRing, StatusBadge, tooltipStyle } from "@/components/common";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
@@ -90,7 +87,7 @@ function CaseHeader({ bc, onRerun, analyzing }: { bc: BurglaryCase; onRerun: () 
   return (
     <div className="flex flex-col gap-4 rounded-xl border bg-card/70 p-5 md:flex-row md:items-center">
       <div className="flex-1 space-y-2">
-        <div className="font-mono text-[11px] tracking-[0.2em] text-primary uppercase">Step 2 · AI Lead Generation</div>
+        <div className="font-mono text-[11px] tracking-[0.2em] text-primary uppercase">Phase 2 concept · case linking (synthetic)</div>
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="font-mono text-3xl font-semibold tracking-tight">Case #{bc.id}</h1>
           <StatusBadge status={bc.status} />
@@ -121,7 +118,7 @@ function CaseHeader({ bc, onRerun, analyzing }: { bc: BurglaryCase; onRerun: () 
 function Analyzing({ step, bc }: { step: number; bc: BurglaryCase }) {
   return (
     <div className="grid gap-4 lg:grid-cols-5">
-      <Panel className="scanline relative overflow-hidden lg:col-span-3" title={<span className="inline-flex items-center gap-2"><Sparkles className="size-4 text-primary" /> AI is analyzing Case #{bc.id}</span>} subtitle="Typical runtime: 4 seconds. Manual equivalent: ~6 detective hours.">
+      <Panel className="scanline relative overflow-hidden lg:col-span-3" title={<span className="inline-flex items-center gap-2"><Sparkles className="size-4 text-primary" /> AI is analyzing Case #{bc.id}</span>} subtitle="Phase 2 concept on synthetic data. Time saved is unmeasured until a pilot.">
         <ol className="space-y-3">
           {STEPS.map((s, i) => (
             <li key={s} className={cn("flex items-center gap-3 text-sm transition-opacity", i > step && "opacity-35")}>
@@ -169,7 +166,7 @@ function Findings({ bc }: { bc: BurglaryCase }) {
         </Panel>
 
         {/* Explanation */}
-        <Panel className="fade-up lg:col-span-9" title={<span className="inline-flex items-center gap-2"><Sparkles className="size-4 text-primary" /> AI Findings</span>} action={<span className="font-mono text-[11px] text-muted-foreground">model v2.4 · confidence {s ? "high" : "low"}</span>}>
+        <Panel className="fade-up lg:col-span-9" title={<span className="inline-flex items-center gap-2"><Sparkles className="size-4 text-primary" /> AI Findings</span>} action={<span className="font-mono text-[11px] text-muted-foreground">concept · synthetic · confidence {s ? "high" : "low"}</span>}>
           {s ? (
             <div className="space-y-4">
               <blockquote className="rounded-lg border-l-2 border-primary bg-primary/[0.07] px-4 py-3 text-base leading-relaxed text-blue-50">
@@ -185,7 +182,7 @@ function Findings({ bc }: { bc: BurglaryCase }) {
                 <span className="font-medium text-foreground">Recommended next action: </span>
                 <span className="text-muted-foreground">
                   {matches[0] ? `Request a 30-day hold on ${matches[0].id} (${matches[0].reportedItem}, ${matches[0].shop}) and obtain the seller record. ` : ""}
-                  Run the vehicle description against ALPR hits within 1 mile of each scene during the {s.timeWindow} window.
+                  Canvass for doorbell video on each block during the {s.timeWindow} window, and confirm each link against the source reports.
                 </span>
               </div>
             </div>
@@ -272,7 +269,7 @@ function Findings({ bc }: { bc: BurglaryCase }) {
         </>
       )}
 
-      <Review bc={bc} group={group} priority={p} />
+      <Review bc={bc} priority={p} />
     </div>
   );
 }
@@ -400,19 +397,17 @@ function TimeChart({ bc }: { bc: BurglaryCase }) {
   );
 }
 
-function Review({ bc, group, priority }: { bc: BurglaryCase; group: BurglaryCase[]; priority: ReturnType<typeof prioritize> }) {
+function Review({ bc, priority }: { bc: BurglaryCase; priority: ReturnType<typeof prioritize> }) {
   const store = useStore();
   const [det, setDet] = useState(bc.detective ?? DETECTIVES[0]);
   const [note, setNote] = useState("");
   const approved = bc.status === "Lead Approved";
-  const cleared = bc.status === "Cleared";
-  const openInGroup = group.filter((g) => store.cases.find((c) => c.id === g.id)?.status !== "Cleared");
 
   return (
     <section id="review" className="scroll-mt-20 rounded-xl border border-primary/30 bg-gradient-to-br from-primary/[0.08] to-card/70 p-5">
       <div className="flex flex-col gap-5 lg:flex-row">
         <div className="flex-1 space-y-2">
-          <div className="font-mono text-[11px] tracking-[0.2em] text-primary uppercase">Step 6 · Detective review</div>
+          <div className="font-mono text-[11px] tracking-[0.2em] text-primary uppercase">Detective review</div>
           <h2 className="text-lg font-semibold">Review the AI lead</h2>
           <p className="text-sm text-muted-foreground">{priority.summary}</p>
           <p className="text-xs text-muted-foreground">The AI recommends; a detective decides. Every action is logged for audit and court disclosure.</p>
@@ -432,26 +427,15 @@ function Review({ bc, group, priority }: { bc: BurglaryCase; group: BurglaryCase
             </Select>
           </div>
 
-          {cleared ? (
-            <div className="fade-up space-y-3 rounded-lg border border-emerald-400/40 bg-emerald-500/10 p-3 text-sm text-emerald-200">
-              <div className="flex items-center gap-2 font-medium"><ShieldCheck className="size-4" /> Cleared by arrest</div>
-              <p className="text-xs text-emerald-200/80">{group.length > 1 ? `One arrest closed ${group.length} burglary reports in this series.` : "Case closed."}</p>
-              <Link href="/impact" className={cn(buttonVariants({ size: "sm" }), "w-full gap-1")}>See the impact <ArrowRight className="size-3.5" /></Link>
-            </div>
-          ) : approved ? (
+          {approved ? (
             <div className="fade-up space-y-2">
               <div className="flex items-center gap-2 rounded-lg border border-cyan-400/40 bg-cyan-500/10 p-3 text-sm text-cyan-200">
                 <CheckCircle2 className="size-4" /> Lead approved · assigned to {det}
               </div>
-              <Button
-                size="lg"
-                className="w-full gap-1.5 bg-emerald-600 text-white hover:bg-emerald-600/85"
-                onClick={() => {
-                  openInGroup.forEach((g) => store.setStatus(g.id, "Cleared", `Case #${g.id} cleared by arrest (series ${bc.series ?? "n/a"})`));
-                }}
-              >
-                <Gavel className="size-4" /> Record arrest &amp; clear {openInGroup.length > 1 ? `${openInGroup.length} linked cases` : "case"}
-              </Button>
+              <p className="rounded-lg border bg-white/[0.02] p-3 text-xs text-muted-foreground">
+                Follow-up happens in the department&apos;s own systems. Each linked case is cleared only if someone is charged with that offense on its own evidence
+                (UCR counts cleared offenses individually), so the tool never clears cases.
+              </p>
             </div>
           ) : (
             <div className="grid gap-2">

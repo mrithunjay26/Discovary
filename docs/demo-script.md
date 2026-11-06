@@ -10,17 +10,21 @@ All demo data is **synthetic**: sources, listings, detectives, prices. Every num
 
 **Setup:** `cd prototype && npm run build && npm run start` → http://localhost:3000. Browser at 1920×1080, 100% zoom. Click **Reset demo state** (sidebar) before every take. The app uses a fixed demo clock (Sat Aug 8, 2026, 09:41), so every take looks identical.
 
-A silent screen recording of the exact click path below can be made with `node prototype/scripts/record-demo.mjs` (needs the app running). Record the voiceover separately and lay it over the video.
+A silent screen recording of the exact click path below, with a visible cursor, can be made with `cd prototype && node scripts/record-demo.mjs --video` (needs the app running). Without `--video`, the script checks every number and outcome and saves screenshots. Record the voiceover separately and lay it over the video.
 
-| Time | Screen / action | Voiceover (read at a calm pace) |
+The recording is **~73 s**, timed to this table. If the voiceover runs long, hold the last frame (Impact) in the video editor.
+
+| Time | Screen / action | Voiceover (about 3 words per second) |
 |---|---|---|
-| 0:00–0:08 | **Lead Search** page (`/`), with the swimlane strip at the top | "Thursday afternoon, a home in Cascade City is burglarized. A laptop, a necklace and a ring are gone. Nationally, less than five percent of stolen electronics value is ever recovered." |
-| 0:08–0:18 | Point at the swimlanes, then click **Fill demo items** | "The detective works the case in the department's own records system, exactly as today. CascadeAI never sees that system. The detective enters only the items: category, model, color, date window, region." |
-| 0:18–0:26 | Type `Case 1044` into the MacBook's model field → **red guard message** → click **Undo** | "Case numbers, names and addresses can't be entered. The form blocks them, so police data stays in CJIS systems." |
-| 0:26–0:42 | Click **Search public sources** → the **agent trace** animates step by step | "A fixed, auditable workflow takes over. It searches three public sources, compares listing photos with the public product image (item appearance only, no faces), and ranks with fixed, versioned rules. Nothing is generated, and nothing learns from the user." |
-| 0:42–0:58 | **Lead Package** appears. Hover the **87** MacBook card, then glance at the necklace and ring cards and the coverage panel. | "Within minutes: a MacBook Pro listed two days after the burglary, about 1.2 miles away. Match score 87, which is a resemblance, not proof. It comes with the link, a saved photo and a timestamp. The necklace is too common to rank and the ring has no match, and CascadeAI says so instead of guessing. One source returned partial results; the coverage report shows the gap." |
-| 0:58–1:06 | Click **Export to case file** on the 87 card, then open **Audit Log** | "The detective decides: export the lead to the case file, or set it aside. Every query and result is logged, with no case data." |
-| 1:06–1:15 | Open **Impact** (defaults to 2.5 h/week) | "Our honest math: about 940 detective hours a year, $50,600 net, clearance from 13 to 13.8 percent. At our input that does not meet the Chief's asks, and a randomized pilot will tell us the real number." |
+| 0:00–0:08 | **Lead Search** page (`/`), with the swimlane strip at the top | "Thursday afternoon, a home in Cascade City is burglarized: a laptop, a necklace, a ring. Nationally, less than five percent of stolen electronics value is ever recovered." |
+| 0:08–0:18 | Click **Fill demo items** | "The detective works the case in the department's own records system, as today. CascadeAI never sees it. The detective enters only the items: category, model, color, date window, region." |
+| 0:18–0:24 | Type `Case 1044` in the MacBook's model field → **red guard message** → **Undo** | "Case numbers, names and addresses are blocked, so police data stays in CJIS systems." |
+| 0:24–0:38 | Click **Search public sources**. The **retrieval workflow** runs (~6 s), then the package appears. | "A fixed, auditable workflow searches three public sources and compares listing photos with the public product image: item appearance only, no faces. It ranks with fixed, versioned rules. Nothing is generated. One source returns partial results, and the report says so." |
+| 0:38–0:54 | The **87** MacBook card (0:38), then a scroll to the **too broad** necklace and **no match** ring (0:44), then back up | "A MacBook Pro listed two days after the burglary, about 1.2 miles away. Match score 87, a resemblance, not proof, with its link, a saved photo and a timestamp. The necklace is too common to rank. The ring has no match, and CascadeAI says so instead of guessing." |
+| 0:54–1:02 | **Export to case file** → **Audit Log** | "The detective decides: export to the case file, or set it aside. Every query and result is logged, with no case data." |
+| 1:02–1:13 | **Impact** (2.5 h/week) | "Our honest math: about 940 detective hours a year, $50,600 net, clearance from 13 to 13.8 percent. That doesn't meet the Chief's asks, and a randomized pilot will tell us the real number." |
+
+To convert the recording for PowerPoint or Google Slides, run: `ffmpeg -i demo-output/cascadeai-demo.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart cascadeai-demo.mp4`
 
 **Backup:** take screenshots of each step (the recording script also saves them) and put them on a hidden backup slide.
 

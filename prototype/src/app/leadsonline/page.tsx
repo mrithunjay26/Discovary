@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Store, Laptop, Watch, Gem, Bike, Wrench, Gamepad2, RefreshCw, ShieldAlert, Lock, Check, X, UserRound, ArrowRight } from "lucide-react";
+import { Store, Laptop, Watch, Gem, Bike, Wrench, Gamepad2, RefreshCw, ShieldAlert, Lock, Check, X, UserRound } from "lucide-react";
 import { PAWN_MATCHES, fmtDate, getCase, linkedCases, money, type MatchStatus, type PawnMatch } from "@/lib/data";
 import { useStore } from "@/lib/store";
 import { PageHeader, Panel, ScoreBar, ScoreRing } from "@/components/common";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const ICON: Record<string, typeof Laptop> = {
@@ -48,9 +48,9 @@ function LeadsOnline() {
   return (
     <div className="mx-auto max-w-[1400px] space-y-5">
       <PageHeader
-        eyebrow="Step 4 · AI checks LeadsOnline"
+        eyebrow="Phase 2 concept · authorized dealer records (synthetic)"
         title="Possible Property Matches"
-        description="Stolen items from linked cases are automatically compared against pawn and second-hand dealer transactions. Detectives see only matches worth a phone call."
+        description="Concept only. Inside CJIS, items from linked cases would be compared with authorized pawn and second-hand dealer records (in WA, dealers keep transaction records and furnish them to police on request, per RCW 19.60). Detectives see only matches worth a phone call."
       >
         <Button
           variant="outline"
@@ -66,7 +66,7 @@ function LeadsOnline() {
       </PageHeader>
 
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border bg-card/70 px-4 py-3 text-xs">
-        <span className="inline-flex items-center gap-2 font-medium text-emerald-300"><span className="size-2 rounded-full bg-emerald-400" /> LeadsOnline connected (mock)</span>
+        <span className="inline-flex items-center gap-2 font-medium text-amber-300"><span className="size-2 rounded-full bg-amber-400" /> Concept: synthetic dealer records</span>
         <span className="text-muted-foreground"><span className="font-mono text-foreground">1,248</span> transactions scanned (24h)</span>
         <span className="text-muted-foreground"><span className="font-mono text-foreground">14</span> dealers in jurisdiction</span>
         <span className="text-muted-foreground"><span className="font-mono text-foreground">{PAWN_MATCHES.length}</span> active matches</span>
@@ -87,16 +87,13 @@ function LeadsOnline() {
         {!featured.length && <p className="text-sm text-muted-foreground">No property matches for this case yet.</p>}
       </div>
 
-      {focus.series === "A" && (
-        <div className="fade-up flex flex-col gap-3 rounded-xl border border-amber-400/30 bg-amber-500/[0.07] p-4 md:flex-row md:items-center">
-          <ShieldAlert className="size-6 shrink-0 text-amber-300" />
-          <div className="flex-1 text-sm">
-            <div className="font-medium text-amber-100">Seller network detected</div>
-            <div className="text-amber-100/70">The same seller ID appears on LO-88213 (MacBook Pro) and LO-88107 (Apple Watch), and is registered to a silver 2010 Honda Civic. Partial plate &ldquo;BXK&rdquo; matches doorbell footage from Case #1157.</div>
-          </div>
-          <Link href="/queue" className={cn(buttonVariants({ size: "sm" }), "gap-1")}>Create lead <ArrowRight className="size-3.5" /></Link>
-        </div>
-      )}
+      <div className="flex flex-col gap-3 rounded-xl border bg-white/[0.02] p-4 text-sm md:flex-row md:items-center">
+        <ShieldAlert className="size-5 shrink-0 text-muted-foreground" />
+        <p className="flex-1 text-muted-foreground">
+          A match is a resemblance between a reported item and a dealer record, not proof. CascadeAI builds no seller profiles and never links sellers to
+          people, vehicles or burglaries. Seller details stay with the dealer and reach the assigned detective only through legal process.
+        </p>
+      </div>
 
       <Panel
         title="All active matches"

@@ -39,7 +39,7 @@ export function ScoreBar({ score, className }: { score: number; className?: stri
   );
 }
 
-export function ScoreRing({ score, size = 112, label }: { score: number; size?: number; label?: string }) {
+export function ScoreRing({ score, size = 112, label, suffix = "%" }: { score: number; size?: number; label?: string; suffix?: string }) {
   const r = size / 2 - 8;
   const circ = 2 * Math.PI * r;
   const t = scoreTone(score);
@@ -61,7 +61,7 @@ export function ScoreRing({ score, size = 112, label }: { score: number; size?: 
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-mono text-2xl font-semibold tabular-nums">{score}%</span>
+        <span className="font-mono text-2xl font-semibold tabular-nums">{score}<span className="text-sm text-muted-foreground">{suffix}</span></span>
         {label && <span className="text-[10px] tracking-wider text-muted-foreground uppercase">{label}</span>}
       </div>
     </div>

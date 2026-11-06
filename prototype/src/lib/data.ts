@@ -225,14 +225,14 @@ export interface PawnMatch {
 }
 
 export const PAWN_MATCHES: PawnMatch[] = [
-  { id: "LO-88213", caseId: 1162, item: "MacBook Pro", reportedItem: "MacBook Pro 16″", shop: "Sound Pawn Brokers", shopArea: "Aurora Ave N", dateListed: "2026-11-03", confidence: 94, basis: ["Serial number partial match (last 6)", "Model / color match", "Listed 1 day after theft"], price: 1150, sellerNote: "Seller ID on file — repeat seller (4 items in 30 days)" },
-  { id: "LO-88107", caseId: 1157, item: "Apple Watch", reportedItem: "Apple Watch Ultra 2", shop: "Pioneer Trade & Loan", shopArea: "Lake City Way NE", dateListed: "2026-11-01", confidence: 87, basis: ["Engraving “M + J 2024” matches report", "Band color match", "Listed 1 day after theft"], price: 310, sellerNote: "Same seller ID as LO-88213" },
-  { id: "LO-87652", caseId: 1044, item: "Jewelry Item", reportedItem: "Antique diamond ring", shop: "Rainier Gold & Pawn", shopArea: "Rainier Ave S", dateListed: "2026-10-19", confidence: 78, basis: ["Photo similarity 0.91 vs. insurance photo", "Setting style match (Art Deco)", "Weight within 0.2 g"], price: 1900, sellerNote: "Seller ID on file — matches vehicle owner lookup (silver Civic)" },
-  { id: "LO-87431", caseId: 1121, item: "Jewelry Item", reportedItem: "Engagement ring", shop: "Lakeside Resale Exchange", shopArea: "Northgate Way", dateListed: "2026-10-14", confidence: 64, basis: ["Carat estimate match (1.2 ct)", "Band size match"], price: 2200, sellerNote: "Seller ID on file" },
-  { id: "LO-87990", caseId: 1109, item: "E-bike", reportedItem: "Rad Power e-bike", shop: "Harbor Pawn & Cycle", shopArea: "1st Ave S", dateListed: "2026-10-06", confidence: 82, basis: ["Frame serial exact match", "Aftermarket basket matches photo"], price: 700, sellerNote: "Seller ID on file — registered owner of white Ford Transit" },
-  { id: "LO-87211", caseId: 1052, item: "Tool set", reportedItem: "Milwaukee tool set", shop: "Westside Tool & Pawn", shopArea: "Delridge Way SW", dateListed: "2026-08-20", confidence: 58, basis: ["Brand / kit contents match", "Engraved initials partially visible"], price: 600, sellerNote: "Seller ID on file" },
-  { id: "LO-88004", caseId: 1115, item: "Game console", reportedItem: "PlayStation 5", shop: "South End Trade Center", shopArea: "MLK Jr Way S", dateListed: "2026-10-09", confidence: 71, basis: ["Serial number exact match"], price: 260, sellerNote: "Seller ID on file" },
-  { id: "LO-88301", caseId: 1144, item: "MacBook Air", reportedItem: "MacBook Air", shop: "Sound Pawn Brokers", shopArea: "Aurora Ave N", dateListed: "2026-10-30", confidence: 41, basis: ["Model match only", "No serial on report"], price: 520, sellerNote: "Seller ID on file" },
+  { id: "LO-88213", caseId: 1162, item: "MacBook Pro", reportedItem: "MacBook Pro 16″", shop: "Sound Pawn Brokers", shopArea: "Aurora Ave N", dateListed: "2026-11-03", confidence: 94, basis: ["Serial number partial match (last 6)", "Model / color match", "Listed 1 day after theft"], price: 1150, sellerNote: "Seller record held by dealer; available to the assigned detective only through legal process (logged)" },
+  { id: "LO-88107", caseId: 1157, item: "Apple Watch", reportedItem: "Apple Watch Ultra 2", shop: "Pioneer Trade & Loan", shopArea: "Lake City Way NE", dateListed: "2026-11-01", confidence: 87, basis: ["Engraving “M + J 2024” matches report", "Band color match", "Listed 1 day after theft"], price: 310, sellerNote: "Seller record held by dealer; available only through legal process (logged)" },
+  { id: "LO-87652", caseId: 1044, item: "Jewelry Item", reportedItem: "Antique diamond ring", shop: "Rainier Gold & Pawn", shopArea: "Rainier Ave S", dateListed: "2026-10-19", confidence: 78, basis: ["Photo similarity 0.91 vs. insurance photo", "Setting style match (Art Deco)", "Weight within 0.2 g"], price: 1900, sellerNote: "Seller record held by dealer; available only through legal process (logged)" },
+  { id: "LO-87431", caseId: 1121, item: "Jewelry Item", reportedItem: "Engagement ring", shop: "Lakeside Resale Exchange", shopArea: "Northgate Way", dateListed: "2026-10-14", confidence: 64, basis: ["Carat estimate match (1.2 ct)", "Band size match"], price: 2200, sellerNote: "Seller record held by dealer; available only through legal process (logged)" },
+  { id: "LO-87990", caseId: 1109, item: "E-bike", reportedItem: "Rad Power e-bike", shop: "Harbor Pawn & Cycle", shopArea: "1st Ave S", dateListed: "2026-10-06", confidence: 82, basis: ["Frame serial exact match", "Aftermarket basket matches photo"], price: 700, sellerNote: "Seller record held by dealer; available only through legal process (logged)" },
+  { id: "LO-87211", caseId: 1052, item: "Tool set", reportedItem: "Milwaukee tool set", shop: "Westside Tool & Pawn", shopArea: "Delridge Way SW", dateListed: "2026-08-20", confidence: 58, basis: ["Brand / kit contents match", "Engraved initials partially visible"], price: 600, sellerNote: "Seller record held by dealer; available only through legal process (logged)" },
+  { id: "LO-88004", caseId: 1115, item: "Game console", reportedItem: "PlayStation 5", shop: "South End Trade Center", shopArea: "MLK Jr Way S", dateListed: "2026-10-09", confidence: 71, basis: ["Serial number exact match"], price: 260, sellerNote: "Seller record held by dealer; available only through legal process (logged)" },
+  { id: "LO-88301", caseId: 1144, item: "MacBook Air", reportedItem: "MacBook Air", shop: "Sound Pawn Brokers", shopArea: "Aurora Ave N", dateListed: "2026-10-30", confidence: 41, basis: ["Model match only", "No serial on report"], price: 520, sellerNote: "Seller record held by dealer; available only through legal process (logged)" },
 ];
 
 export const matchesForCase = (bc: BurglaryCase) => {
@@ -303,47 +303,13 @@ export const MONTHLY = [
   { month: "May", burglaries: 856, cleared: 112 },
   { month: "Jun", burglaries: 879, cleared: 115 },
   { month: "Jul", burglaries: 893, cleared: 118 },
-  { month: "Aug", burglaries: 871, cleared: 122 },
-  { month: "Sep", burglaries: 812, cleared: 117 },
-  { month: "Oct", burglaries: 775, cleared: 116 },
+  { month: "Aug", burglaries: 871, cleared: 113 },
+  { month: "Sep", burglaries: 812, cleared: 106 },
+  { month: "Oct", burglaries: 775, cleared: 101 },
 ].map((m) => ({ ...m, rate: +((m.cleared / m.burglaries) * 100).toFixed(1) }));
 
 export const YTD_TOTAL = MONTHLY.reduce((s, m) => s + m.burglaries, 0);
 export const YTD_CLEARED = MONTHLY.reduce((s, m) => s + m.cleared, 0);
-
-export const IMPACT = {
-  annualBurglaries: 10000,
-  currentRate: 13,
-  projectedRate: 16,
-  additionalSolved: 300,
-  laborReduction: 15,
-  hoursPerCaseBefore: 22,
-  hoursPerCaseAfter: 18.7,
-};
-
-export const CLEARANCE_PROJECTION = [
-  { q: "Q1 '26", current: 12.9, projected: null as number | null },
-  { q: "Q2 '26", current: 13.1, projected: null },
-  { q: "Q3 '26", current: 13.0, projected: 13.0 },
-  { q: "Q4 '26", current: 13.0, projected: 13.8 },
-  { q: "Q1 '27", current: 13.1, projected: 14.6 },
-  { q: "Q2 '27", current: 12.9, projected: 15.3 },
-  { q: "Q3 '27", current: 13.0, projected: 15.8 },
-  { q: "Q4 '27", current: 13.0, projected: 16.0 },
-];
-
-export const SOLVED_SOURCES = [
-  { source: "Series linking", cases: 140, detail: "Clearing one arrest closes multiple linked reports" },
-  { source: "Pawn / property matches", cases: 95, detail: "LeadsOnline matches surfaced within 48 hrs" },
-  { source: "Smarter prioritization", cases: 65, detail: "Detective time moved to high-solvability cases" },
-];
-
-export const LABOR_BREAKDOWN = [
-  { task: "Report review", before: 6, after: 5.1 },
-  { task: "Manual case linking", before: 7, after: 5.6 },
-  { task: "Pawn database checks", before: 4, after: 3.0 },
-  { task: "Follow-up & interviews", before: 5, after: 5.0 },
-];
 
 export const DETECTIVES = ["Det. K. Nguyen", "Det. M. Brooks", "Det. T. Haddad", "Det. S. Okafor", "Det. R. Alvarez"];
 
