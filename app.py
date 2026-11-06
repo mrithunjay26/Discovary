@@ -9,6 +9,9 @@ from datetime import date
 
 import streamlit as st
 
+import pandas as pd
+
+from search.audit import AuditLog
 from search.config import DATA, ROOT, load_config
 from search.embedder import CLIP_NAME
 from search.input_check import BLOCK_MESSAGE, check_keywords
@@ -34,12 +37,18 @@ def get_index() -> Index:
     return Index(DATA)
 
 
+@st.cache_resource
+def get_audit() -> AuditLog:
+    return AuditLog(DATA / "audit.db")
+
+
 try:
     INDEX = get_index()
 except FileNotFoundError:
     st.error("No index found. Run `python scripts/generate_data.py` then `python scripts/build_index.py`.")
     st.stop()
 EMBEDDER = INDEX.meta["embedder"]
+AUDIT = get_audit()
 
 st.markdown('<div class="cascade-banner">PROTOTYPE. Synthetic data only. Retrieval only: no case data, no text generation, no learning. A listing match is a lead, not proof.</div>', unsafe_allow_html=True)
 if EMBEDDER != CLIP_NAME:
@@ -58,12 +67,13 @@ def load_scenario(key: str) -> None:
     for f in FORM_FIELDS:
         st.session_state[f"f_{f}"] = SCENARIOS[key][f]
     st.session_state["run_now"] = True
+    st.session_state["page"] = "Search"
 
 
 # ---------- sidebar ----------
 with st.sidebar:
     st.markdown("### 🔎 CascadeAI\n**Property Lead Finder**")
-    page = st.radio("Page", ["Search"], label_visibility="collapsed")
+    page = st.radio("Page", ["Search", "Audit log", "About"], key="page", label_visibility="collapsed")
     st.selectbox("Detective ID", DETECTIVES, key="detective", help="Stand-in for MFA and role-based access.")
     st.caption("Detective ID: stand-in for MFA and role-based access.")
     st.markdown("#### Demo scenarios")
@@ -120,11 +130,11 @@ def search_page() -> None:
 
 
 def on_blocked() -> None:
-    pass
+    AUDIT.log_blocked(st.session_state.detective)  # the blocked text is never passed to the log
 
 
 def on_searched(q: dict, res) -> None:
-    pass
+    AUDIT.log_search(st.session_state.detective, q, CFG["version"], EMBEDDER, res)
 
 
 def coverage_box(res) -> None:
@@ -175,5 +185,66 @@ def render_package(res) -> None:
     st.caption("A listing match is a lead, not proof. The detective checks each listing and decides what to do next.")
 
 
+# ---------- audit log page ----------
+def audit_page() -> None:
+    st.title("Audit log")
+    st.caption("Every search, newest first: who ran it, the structured query, config version, embedder, outcome and listings returned. "
+               "For blocked attempts only the time and detective ID are stored, never the blocked text.")
+    rows = AUDIT.rows()
+    if not rows:
+        st.info("No searches yet. Run a demo scenario from the sidebar.")
+        return
+    df = pd.DataFrame(rows).rename(columns={
+        "timestamp": "Timestamp", "detective_id": "Detective", "query_json": "Structured query", "config_version": "Config",
+        "embedder": "Embedder", "n_results": "Results", "outcome": "Outcome", "listing_ids": "Listing IDs returned"})
+    counts = df["Outcome"].value_counts()
+    cols = st.columns(4)
+    for col, name in zip(cols, ["ranked", "too_many", "none", "blocked"]):
+        col.metric(name.replace("_", " ").capitalize(), int(counts.get(name, 0)))
+    st.dataframe(df.drop(columns=["id"]), hide_index=True, width="stretch")
+    st.download_button("Export CSV", df.to_csv(index=False), "cascadeai_audit_log.csv", "text/csv")
+
+
+# ---------- about page ----------
+def about_page() -> None:
+    st.title("About CascadeAI")
+    st.markdown("""
+**How it works, in five steps**
+
+1. **Form.** The detective describes the stolen item with structured fields: category, brand, model, color, region, date window and a few item keywords. No narrative, no names, no case details.
+2. **Approved sources.** CascadeAI searches a fixed index of resale listings from approved sources. In this prototype the sources (MarketA, MarketB, ResaleC) and every listing are synthetic.
+3. **Photo and text comparison.** Each listing photo is compared with the official product photo using a pretrained image model, and the listing text is compared with the item details using fixed rules. The two scores are combined with fixed weights.
+4. **Property Lead Package.** Listings above a frozen threshold are returned with the saved photo, link, price, date, source and the match factors behind them. If nothing clears the threshold it says "No match found." If too many do, it refuses to rank them.
+5. **The detective checks and decides.** Every lead is a starting point. The detective verifies it and decides what, if anything, to do next.
+""")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("""
+**What it does not do**
+
+- Does not prove a listed item is the stolen one
+- Does not identify suspects or sellers
+- Does not link burglaries together
+- Does not read or use case data
+- No face detection or recognition
+- Does not generate text or learn from use
+""")
+    with c2:
+        st.markdown("""
+**Limitations**
+
+- Synthetic listings and drawn placeholder images, much easier than real photos
+- Look-alike models can score close together
+- The threshold was calibrated on three planted scenarios only
+- Accuracy numbers come from planted fake data
+- No real hosting, authentication or marketplace access has been tested
+""")
+    st.caption(f"Config {CFG['version']} · weights text {CFG['w_text']} / image {CFG['w_img']} · threshold {CFG['threshold']} · embedder {EMBEDDER}")
+
+
 if page == "Search":
     search_page()
+elif page == "Audit log":
+    audit_page()
+else:
+    about_page()
