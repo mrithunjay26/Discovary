@@ -1,4 +1,4 @@
-"""CascadeAI Property Lead Finder: Streamlit app.
+"""TraceBack Property Lead Finder: Streamlit app.
 
 Retrieval only. The app reads a prebuilt index; it never loads a model, never generates
 text, never calls the network, and never reads case files. Run: streamlit run app.py
@@ -19,15 +19,15 @@ from search.matcher import Index, search
 from search.normalize import COLORS
 from search.scenarios import FORM_FIELDS, SCENARIOS
 
-st.set_page_config(page_title="CascadeAI · Property Lead Finder", page_icon="🔎", layout="wide")
+st.set_page_config(page_title="TraceBack · Property Lead Finder", page_icon="🔎", layout="wide")
 CFG = load_config()
 REGIONS = ["Northside", "Eastside", "Downtown", "Southside"]
 DETECTIVES = ["DET-0142", "DET-0217", "DET-0388"]
 
 st.markdown("""<style>
 .block-container{padding-top:1.4rem}
-.cascade-banner{background:#3b1d0b;border:1px solid #f59e0b;color:#fde68a;padding:.6rem 1rem;border-radius:.5rem;font-weight:600;margin-bottom:.8rem}
-.cascade-fallback{background:#450a0a;border:1px solid #ef4444;color:#fecaca;padding:.5rem 1rem;border-radius:.5rem;margin-bottom:.8rem}
+.traceback-banner{background:#3b1d0b;border:1px solid #f59e0b;color:#fde68a;padding:.6rem 1rem;border-radius:.5rem;font-weight:600;margin-bottom:.8rem}
+.traceback-fallback{background:#450a0a;border:1px solid #ef4444;color:#fecaca;padding:.5rem 1rem;border-radius:.5rem;margin-bottom:.8rem}
 .factors{font-family:ui-monospace,monospace;font-size:.85rem;background:rgba(59,130,246,.1);border-left:3px solid #3b82f6;padding:.4rem .6rem;border-radius:.25rem}
 </style>""", unsafe_allow_html=True)
 
@@ -50,9 +50,9 @@ except FileNotFoundError:
 EMBEDDER = INDEX.meta["embedder"]
 AUDIT = get_audit()
 
-st.markdown('<div class="cascade-banner">PROTOTYPE. Synthetic data only. Retrieval only: no case data, no text generation, no learning. A listing match is a lead, not proof.</div>', unsafe_allow_html=True)
+st.markdown('<div class="traceback-banner">PROTOTYPE. Synthetic data only. Retrieval only: no case data, no text generation, no learning. A listing match is a lead, not proof.</div>', unsafe_allow_html=True)
 if EMBEDDER != CLIP_NAME:
-    st.markdown('<div class="cascade-fallback">Fallback embedder in use: results are for UI demo only.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="traceback-fallback">Fallback embedder in use: results are for UI demo only.</div>', unsafe_allow_html=True)
 
 # ---------- form state ----------
 CATALOG = INDEX.catalog
@@ -72,7 +72,7 @@ def load_scenario(key: str) -> None:
 
 # ---------- sidebar ----------
 with st.sidebar:
-    st.markdown("### 🔎 CascadeAI\n**Property Lead Finder**")
+    st.markdown("### 🔎 TraceBack\n**Property Lead Finder**")
     page = st.radio("Page", ["Search", "Audit log", "About"], key="page", label_visibility="collapsed")
     st.selectbox("Detective ID", DETECTIVES, key="detective", help="Stand-in for MFA and role-based access.")
     st.caption("Detective ID: stand-in for MFA and role-based access.")
@@ -88,7 +88,7 @@ with st.sidebar:
 # ---------- search page ----------
 def search_page() -> None:
     st.title("Property Lead Finder")
-    st.caption("Describe the stolen item with structured fields. CascadeAI searches synthetic resale listings and returns possible matches with their sources.")
+    st.caption("Describe the stolen item with structured fields. TraceBack searches synthetic resale listings and returns possible matches with their sources.")
 
     c1, c2, c3 = st.columns(3)
     c1.selectbox("Category", CATEGORIES, key="f_category")
@@ -202,17 +202,17 @@ def audit_page() -> None:
     for col, name in zip(cols, ["ranked", "too_many", "none", "blocked"]):
         col.metric(name.replace("_", " ").capitalize(), int(counts.get(name, 0)))
     st.dataframe(df.drop(columns=["id"]), hide_index=True, width="stretch")
-    st.download_button("Export CSV", df.to_csv(index=False), "cascadeai_audit_log.csv", "text/csv")
+    st.download_button("Export CSV", df.to_csv(index=False), "traceback_audit_log.csv", "text/csv")
 
 
 # ---------- about page ----------
 def about_page() -> None:
-    st.title("About CascadeAI")
+    st.title("About TraceBack")
     st.markdown("""
 **How it works, in five steps**
 
 1. **Form.** The detective describes the stolen item with structured fields: category, brand, model, color, region, date window and a few item keywords. No narrative, no names, no case details.
-2. **Approved sources.** CascadeAI searches a fixed index of resale listings from approved sources. In this prototype the sources (MarketA, MarketB, ResaleC) and every listing are synthetic.
+2. **Approved sources.** TraceBack searches a fixed index of resale listings from approved sources. In this prototype the sources (MarketA, MarketB, ResaleC) and every listing are synthetic.
 3. **Photo and text comparison.** Each listing photo is compared with the official product photo using a pretrained image model, and the listing text is compared with the item details using fixed rules. The two scores are combined with fixed weights.
 4. **Property Lead Package.** Listings above a frozen threshold are returned with the saved photo, link, price, date, source and the match factors behind them. If nothing clears the threshold it says "No match found." If too many do, it refuses to rank them.
 5. **The detective checks and decides.** Every lead is a starting point. The detective verifies it and decides what, if anything, to do next.

@@ -1,10 +1,10 @@
-# CascadeAI prototype: prompt for Claude Code
+# TraceBack prototype: prompt for Claude Code
 
 Paste everything below the line into Claude Code in an empty project folder.
 
 ---
 
-Build a local, demo-ready prototype called **CascadeAI (Property Lead Finder)** for a case competition set in the fictional "Cascade City." It is a **retrieval-only lead finder for stolen burglary property**. A detective fills in a short structured form describing items taken. The tool searches a **synthetic** set of public-style resale listings, compares each listing photo with the official product photo for the queried make and model, and returns a **Property Lead Package** of possible matches, each with a link, saved photo, price, date, and templated match factors. It never generates text and never guesses.
+Build a local, demo-ready prototype called **TraceBack (Property Lead Finder)** for a case competition set in the fictional "Cascade City." It is a **retrieval-only lead finder for stolen burglary property**. A detective fills in a short structured form describing items taken. The tool searches a **synthetic** set of public-style resale listings, compares each listing photo with the official product photo for the queried make and model, and returns a **Property Lead Package** of possible matches, each with a link, saved photo, price, date, and templated match factors. It never generates text and never guesses.
 
 This is a prototype for a 30-second to 90-second recorded demo. It does not need to be production ready. Keep the code small, readable, and deterministic.
 
@@ -36,7 +36,7 @@ Build P0 first and run it end to end before starting P1.
 ## PROJECT STRUCTURE
 
 ```
-cascadeai/
+traceback/
   app.py                  # Streamlit app (pages: Search, Audit log, About)
   config.yaml             # versioned settings (weights, threshold, limits, demo anchor date)
   requirements.txt

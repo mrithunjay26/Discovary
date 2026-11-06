@@ -1,4 +1,4 @@
-# CascadeAI Property Lead Finder: versioned settings.
+# TraceBack Property Lead Finder: versioned settings.
 # These values are loaded once at startup and never change at runtime.
 # Change them only by editing this file, bumping `version`, and rebuilding.
 version: "1.0.0"

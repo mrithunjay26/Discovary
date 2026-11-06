@@ -1,6 +1,6 @@
-# CascadeAI: Property Lead Finder
+# TraceBack: Property Lead Finder
 
-A local prototype for a case competition set in the fictional **Cascade City**. A burglary detective describes stolen items with a short structured form. CascadeAI searches a **synthetic** set of resale listings and compares each listing photo with the official product photo. It returns a **Property Lead Package** of possible matches, each with a link, saved photo, price, date and templated match factors.
+A local prototype for a case competition set in the fictional **Cascade City**. A burglary detective describes stolen items with a short structured form. TraceBack searches a **synthetic** set of resale listings and compares each listing photo with the official product photo. It returns a **Property Lead Package** of possible matches, each with a link, saved photo, price, date and templated match factors.
 
 It is **retrieval only**. It never generates text, never guesses, never reads case files, and never learns from use. A listing match is a lead, not proof.
 
@@ -37,7 +37,7 @@ pytest                              # full test suite
 python scripts/evaluate.py          # synthetic benchmark (recall@10, false positives)
 ```
 
-If CLIP cannot load (for example no internet on first run), the index is built with a color-histogram embedder. The app then shows the banner: "Fallback embedder in use: results are for UI demo only." You can force it with `CASCADE_EMBEDDER=histogram`.
+If CLIP cannot load (for example no internet on first run), the index is built with a color-histogram embedder. The app then shows the banner: "Fallback embedder in use: results are for UI demo only." You can force it with `TRACEBACK_EMBEDDER=histogram`.
 
 ## How it works
 
@@ -105,7 +105,7 @@ Each sidebar button fills the form and runs the search, so the demo needs no typ
 
 ### 30-second demo script
 
-1. **(0–10 s) S1.** "A detective describes a stolen laptop. CascadeAI finds three listings and puts each saved photo next to the official one, with a link, price, date and match factors. The look-alike sibling model is not shown."
+1. **(0–10 s) S1.** "A detective describes a stolen laptop. TraceBack finds three listings and puts each saved photo next to the official one, with a link, price, date and match factors. The look-alike sibling model is not shown."
 2. **(10–17 s) S2.** "For a very common tablet, it refuses to rank 40-plus look-alikes and asks the detective to narrow the search."
 3. **(17–24 s) S4.** "Personal or case details, like an address or phone number, are blocked before any search runs."
 4. **(24–30 s) Audit log.** "Every search is logged with who ran it, the query, the config version and the results. The blocked text was never saved."

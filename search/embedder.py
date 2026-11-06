@@ -54,8 +54,8 @@ class ClipEmbedder:
 
 
 def get_embedder(allow_download: bool = False):
-    """CLIP if it loads, otherwise the histogram fallback. Set CASCADE_EMBEDDER=histogram to force it."""
-    if os.environ.get("CASCADE_EMBEDDER") == "histogram":
+    """CLIP if it loads, otherwise the histogram fallback. Set TRACEBACK_EMBEDDER=histogram to force it."""
+    if os.environ.get("TRACEBACK_EMBEDDER") == "histogram":
         return HistogramEmbedder()
     try:
         return ClipEmbedder(allow_download=allow_download)
