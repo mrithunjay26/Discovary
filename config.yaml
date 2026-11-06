@@ -1,0 +1,19 @@
+# CascadeAI Property Lead Finder: versioned settings.
+# These values are loaded once at startup and never change at runtime.
+# Change them only by editing this file, bumping `version`, and rebuilding.
+version: "1.0.0"
+demo_today: "2026-11-01"      # fixed anchor so the demo is reproducible on any real date
+seed: 1044                    # random seed for synthetic data generation
+w_text: 0.4
+w_img: 0.6
+# threshold: calibrated ONCE on the planted scenarios with CLIP, then frozen.
+#   S1 lowest true match 0.868, S1 highest decoy (look-alike Vega 13) 0.795,
+#   S3 highest in-window listing 0.592. Midpoint of the S1 gap = 0.83.
+#   At 0.83, S2 has 33 listings above threshold (> max_ranked), so it shows "too many".
+threshold: 0.83
+max_ranked: 25
+max_window_days: 90
+max_keywords_chars: 60
+dedupe_image_sim: 0.95        # near-identical photo
+dedupe_text_sim: 90           # rapidfuzz ratio on normalized title
+dedupe_price_pct: 5           # reposts keep (almost) the same asking price
