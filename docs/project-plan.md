@@ -1,5 +1,7 @@
 # CascadeAI — Team Project Plan
 
+> **Status: superseded by Proposal V6** (`docs/proposal-v6.md`), the current pitch: a case-data-free public-listing search. This 5-agent plan is kept only as the basis for the clearly labeled **Phase 2 concept** (in-CJIS case linking), and its numbers (+300 solved, $293,350 gross) are no longer used. See `CLAUDE.md` → Numbers.
+
 ## Section 1: Bottleneck we picked — Stage 6: Detective Follow-Up
 
 Detective follow-up has the most leverage because this stage handles:
