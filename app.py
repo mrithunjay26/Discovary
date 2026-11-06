@@ -153,7 +153,7 @@ def render_package(res) -> None:
     st.divider()
     st.subheader("Property Lead Package")
     a, b, c = st.columns([1, 2, 3])
-    a.metric("Leads", len(res.leads) if res.outcome == "ranked" else (f"{len(res.leads)} (unranked)" if res.outcome == "too_many" else 0))
+    a.metric("Listings (unranked)" if res.outcome == "too_many" else "Leads", len(res.leads))
     b.markdown(f"**Outcome**  \n{res.message}")
     c.markdown(f"**Query**  \n{q['brand']} {q['model']} ({q['category']}) · color {q['color']} · {q['region']} · last {q['window_days']} days"
                + (f" · keywords “{q['keywords']}”" if q["keywords"] else ""))
